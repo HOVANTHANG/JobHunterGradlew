@@ -5,12 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.JobHunter.domain.User;
+import com.example.JobHunter.domain.Company;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    User findByEmail(String username);
-
-    Page<User> findAll(Pageable pageable);
+public interface CompanyRepository extends JpaRepository<Company, Long> {
+    Page<Company> findAll(Pageable pageable);
 }

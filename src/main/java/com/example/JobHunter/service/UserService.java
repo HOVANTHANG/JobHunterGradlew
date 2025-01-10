@@ -1,7 +1,12 @@
 package com.example.JobHunter.service;
 
 import com.example.JobHunter.domain.User;
+import com.example.JobHunter.domain.dto.Meta;
+import com.example.JobHunter.domain.dto.ResultPaginationDTO;
 import com.example.JobHunter.repository.UserRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +28,20 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public List<User> getallUser() {
-        return this.userRepository.findAll();
+    public ResultPaginationDTO getallUser(Pageable pageable) {
+        Page<User> users = this.userRepository.findAll(pageable);
+        ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
+        Meta meta = new Meta();
+
+        meta.setPage(users.getNumber() + 1);
+        meta.setPageSize(users.getSize());
+
+        meta.setPages(users.getTotalPages());
+        meta.setTotal(users.getTotalElements());
+
+        resultPaginationDTO.setMeta(meta);
+        resultPaginationDTO.setResult(users.getContent());
+        return resultPaginationDTO;
     }
 
     public User getUserById(long id) {
