@@ -1,13 +1,13 @@
 package com.example.JobHunter.domain.dto;
 
+import com.example.JobHunter.domain.User;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ResLoginDTO {
     private String access_token;
-
-    public String getAccess_token() {
-        return access_token;
-    }
-
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
-    }
+    private UserLoginDTO user;
 }

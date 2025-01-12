@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,26 @@ public class GlobalException {
         response.setMessage("Exception occured");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<RestResponse<Object>> NoResourceFoundException(NoResourceFoundException e) {
+        RestResponse<Object> restResponse = new RestResponse<Object>();
+        restResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        restResponse.setError(e.getMessage());
+        restResponse.setMessage("Resource not found");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(restResponse);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<RestResponse<Object>> NullPointerException(NullPointerException e) {
+        RestResponse<Object> restResponse = new RestResponse<Object>();
+        restResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        restResponse.setError(e.getMessage());
+        restResponse.setMessage("Internal server error");
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(restResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

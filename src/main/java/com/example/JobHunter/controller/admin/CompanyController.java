@@ -2,16 +2,16 @@ package com.example.JobHunter.controller.admin;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.JobHunter.Util.annotation.ApiMessage;
 import com.example.JobHunter.domain.Company;
-import com.example.JobHunter.domain.dto.CompanyCriteriaDTO;
 import com.example.JobHunter.domain.dto.ResultPaginationDTO;
 import com.example.JobHunter.service.CompanyService;
 import com.turkraft.springfilter.boot.Filter;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
+@RequestMapping("/api/v1")
 public class CompanyController {
 
     private CompanyService companyService;
@@ -37,6 +38,7 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
+    @ApiMessage("Fetch all companies")
     public ResponseEntity<ResultPaginationDTO> getAllCompany(@Filter Specification<Company> spec, Pageable pageable) {
 
         // int page = 1;
@@ -60,7 +62,8 @@ public class CompanyController {
     }
 
     @GetMapping("/company/{id}")
-    public ResponseEntity<Company> getCompanyById(@PathVariable long id) {
+    @ApiMessage("Fetch company by id")
+    public ResponseEntity<Company> getCompanyById(@PathVariable("id") long id) {
         return ResponseEntity.ok(
                 this.companyService.fetchCompanyByID(id).isPresent() ? this.companyService.fetchCompanyByID(id).get()
                         : null);
@@ -72,7 +75,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/delete_company/{id}")
-    public ResponseEntity<String> deleteCompany(@PathVariable long id) {
+    public ResponseEntity<String> deleteCompany(@PathVariable("id") long id) {
         this.companyService.deleteCompany(id);
         return ResponseEntity.ok("Delete company success");
     }
