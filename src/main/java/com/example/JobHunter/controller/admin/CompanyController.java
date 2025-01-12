@@ -1,6 +1,7 @@
 package com.example.JobHunter.controller.admin;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import com.example.JobHunter.domain.Company;
 import com.example.JobHunter.domain.dto.CompanyCriteriaDTO;
 import com.example.JobHunter.domain.dto.ResultPaginationDTO;
 import com.example.JobHunter.service.CompanyService;
+import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 
@@ -35,26 +37,26 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    public ResponseEntity<ResultPaginationDTO> getAllCompany(CompanyCriteriaDTO companyCriteriaDTO) {
+    public ResponseEntity<ResultPaginationDTO> getAllCompany(@Filter Specification<Company> spec, Pageable pageable) {
 
-        int page = 1;
-        int pageSizeInt = 10;
-        try {
-            if (companyCriteriaDTO.getPageSize().isPresent()) {
-                pageSizeInt = Integer.parseInt(companyCriteriaDTO.getPageSize().get());
+        // int page = 1;
+        // int pageSizeInt = 10;
+        // try {
+        // if (companyCriteriaDTO.getPageSize().isPresent()) {
+        // pageSizeInt = Integer.parseInt(companyCriteriaDTO.getPageSize().get());
 
-            }
-            if (companyCriteriaDTO.getPageOptionl().isPresent()) {
-                page = Integer.parseInt(companyCriteriaDTO.getPageOptionl().get());
-            } else {
+        // }
+        // if (companyCriteriaDTO.getPageOptionl().isPresent()) {
+        // page = Integer.parseInt(companyCriteriaDTO.getPageOptionl().get());
+        // } else {
 
-            }
-        } catch (Exception e) {
-        }
+        // }
+        // } catch (Exception e) {
+        // }
 
-        Pageable pageable = PageRequest.of(page - 1, pageSizeInt);
+        // Pageable pageable = PageRequest.of(page - 1, pageSizeInt);
 
-        return ResponseEntity.ok(this.companyService.handleGetAllCompany(pageable));
+        return ResponseEntity.ok(this.companyService.handleGetAllCompany(spec, pageable));
     }
 
     @GetMapping("/company/{id}")
