@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import com.example.JobHunter.Util.SecurityUtil;
 import com.example.JobHunter.Util.constant.GenderEnum;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -49,6 +50,7 @@ public class User {
 
     private String address;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 
     private Instant createdAt;

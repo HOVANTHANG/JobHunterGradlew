@@ -12,7 +12,6 @@ import com.example.JobHunter.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -157,6 +156,18 @@ public class UserService {
         userLoginDTO.setName(user.getName());
         userLoginDTO.setEmail(user.getEmail());
         return userLoginDTO;
+    }
+
+    public void updateRefreshToken(String refresh_Token, String email) {
+        User user = this.userRepository.findByEmail(email);
+        if (user != null) {
+            user.setRefreshToken(refresh_Token);
+            this.userRepository.save(user);
+        }
+    }
+
+    public User handlerGetUserByRefreshTokenAndEmail(String token, String email) {
+        return this.userRepository.findByRefreshTokenAndEmail(token, email);
     }
 
 }

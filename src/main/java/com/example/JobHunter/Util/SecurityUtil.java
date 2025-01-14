@@ -11,11 +11,20 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Service;
+
+import com.example.JobHunter.domain.dto.UserLoginDTO;
+import com.nimbusds.jose.util.Base64;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 @Service
 public class SecurityUtil {
@@ -30,25 +39,69 @@ public class SecurityUtil {
     @Value("${thangka.jwt.base64-secret}")
     private String jwtKey;
 
-    @Value("${thangka.jwt.token-validity-in-seconds}")
-    private long jwtExpiration;
+    @Value("${thangka.jwt.create-token-validity-in-seconds}")
+    private long accessTokenExpiration;
+    @Value("${thangka.jwt.refresh-token-validity-in-seconds}")
+    private long refreshTokenExpiration;
 
-    public String CreateToken(Authentication auth) {
+    public String CreateAccessToken(String email, UserLoginDTO user) {
         Instant now = Instant.now();
         Instant validity;
-        validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
+        validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
+
+        // hardcode permissions
+        List<String> permissions = new ArrayList<String>();
+        permissions.add("ROLE_USER_CREATE");
+        permissions.add("ROLE_USER_UPDATE");
 
         // @formatter:off
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
                 .expiresAt(validity)
-                .subject(auth.getName())
-                .claim("thangka", auth)
+                .subject(email)
+                .claim("permission", permissions)
+                .claim("user", user)
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
 
+    }
+    public String CreateRefreshToken(String email, UserLoginDTO user) {
+        Instant now = Instant.now();
+        Instant validity;
+        validity = now.plus(this.refreshTokenExpiration, ChronoUnit.SECONDS);
+
+        // @formatter:off
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(email)
+                .claim("user", user)
+                .build();
+
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+
+    }
+    public Jwt checkValidRefreshToken(String token){
+         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(
+                getSecretKey()).macAlgorithm(SecurityUtil.JWT_ALGORITHM).build();
+            try {
+               return  jwtDecoder.decode(token);
+            } catch (Exception e) {
+                System.out.println(">>>> Refresh token error: " + e.getMessage());
+                throw e;
+            }
+       
+        
+    }
+
+
+     private SecretKey getSecretKey() {
+        byte[] keyBytes = Base64.from(jwtKey).decode();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length,
+                JWT_ALGORITHM.getName());
     }
 
     /**

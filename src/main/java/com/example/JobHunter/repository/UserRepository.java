@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Page<User> findAll(Pageable pageable);
 
     boolean existsByEmail(String email);
+
+    User findByRefreshTokenAndEmail(String refreshToken, String email);
 }
