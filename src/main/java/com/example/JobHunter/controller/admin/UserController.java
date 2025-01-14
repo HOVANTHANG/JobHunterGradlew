@@ -3,10 +3,10 @@ package com.example.JobHunter.controller.admin;
 import com.example.JobHunter.Util.annotation.ApiMessage;
 import com.example.JobHunter.domain.RestResponse;
 import com.example.JobHunter.domain.User;
-import com.example.JobHunter.domain.dto.ResultPaginationDTO;
-import com.example.JobHunter.domain.dto.UserCreateDTO;
-import com.example.JobHunter.domain.dto.UserDTO;
-import com.example.JobHunter.domain.dto.UserUpdateDTO;
+import com.example.JobHunter.domain.dto.response.ResCreateUserDTO;
+import com.example.JobHunter.domain.dto.response.ResUpdateUserDTO;
+import com.example.JobHunter.domain.dto.response.ResUserDTO;
+import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
 
@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ApiMessage("Create a new user")
-    public ResponseEntity<UserCreateDTO> create(@Valid @RequestBody User user) {
+    public ResponseEntity<ResCreateUserDTO> create(@Valid @RequestBody User user) {
         // return this.userService.createUser(user);
         if (this.userService.existsByEmail(user.getEmail())) {
             throw new UsernameNotFoundException("Email " + user.getEmail() + " already exists");
@@ -56,7 +56,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     @ApiMessage("Fetch user by id")
-    public ResponseEntity<UserDTO> getUser(@PathVariable("id") long id) {
+    public ResponseEntity<ResUserDTO> getUser(@PathVariable("id") long id) {
         if (this.userService.fetchUserByid(id) == null) {
             throw new UsernameNotFoundException("Not found user with id: " + id);
         }
@@ -66,7 +66,7 @@ public class UserController {
 
     @PutMapping("/users")
     @ApiMessage("Update user")
-    public ResponseEntity<UserUpdateDTO> updateUser(@RequestBody User user) {
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User user) {
         if (user != null) {
             if (this.userService.fetchUserByid(user.getId()) == null) {
                 throw new UsernameNotFoundException("Not found user with id: " + user.getId());

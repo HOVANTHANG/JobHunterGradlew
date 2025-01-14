@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.JobHunter.domain.Company;
-import com.example.JobHunter.domain.dto.ResultPaginationDTO;
+import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.repository.CompanyRepository;
 
 import jakarta.validation.Valid;

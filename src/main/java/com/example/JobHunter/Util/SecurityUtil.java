@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Service;
 
-import com.example.JobHunter.domain.dto.UserLoginDTO;
+import com.example.JobHunter.domain.dto.response.ResLoginDTO;
 import com.nimbusds.jose.util.Base64;
 
 import java.time.Instant;
@@ -44,7 +44,7 @@ public class SecurityUtil {
     @Value("${thangka.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 
-    public String CreateAccessToken(String email, UserLoginDTO user) {
+    public String CreateAccessToken(String email, ResLoginDTO.UserLoginDTO user) {
         Instant now = Instant.now();
         Instant validity;
         validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
@@ -67,7 +67,7 @@ public class SecurityUtil {
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
 
     }
-    public String CreateRefreshToken(String email, UserLoginDTO user) {
+    public String CreateRefreshToken(String email, ResLoginDTO.UserLoginDTO user) {
         Instant now = Instant.now();
         Instant validity;
         validity = now.plus(this.refreshTokenExpiration, ChronoUnit.SECONDS);

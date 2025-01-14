@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain.dto;
+package com.example.JobHunter.domain.dto.response;
 
 import com.example.JobHunter.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +15,16 @@ public class ResLoginDTO {
     private String access_token;
 
     private UserLoginDTO user;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserLoginDTO {
+        private long id;
+        private String name;
+        private String email;
+    }
 
     @Setter
     @Getter

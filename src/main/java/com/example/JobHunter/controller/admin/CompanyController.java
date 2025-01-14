@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobHunter.Util.annotation.ApiMessage;
 import com.example.JobHunter.domain.Company;
-import com.example.JobHunter.domain.dto.ResultPaginationDTO;
+import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.service.CompanyService;
 import com.turkraft.springfilter.boot.Filter;
 

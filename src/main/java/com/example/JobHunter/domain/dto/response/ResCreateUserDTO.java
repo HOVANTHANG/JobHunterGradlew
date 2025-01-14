@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain.dto;
+package com.example.JobHunter.domain.dto.response;
 
 import java.time.Instant;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserCreateDTO {
+public class ResCreateUserDTO {
     private long id;
 
     private String name;

@@ -1,11 +1,10 @@
 package com.example.JobHunter.service;
 
 import com.example.JobHunter.domain.User;
-import com.example.JobHunter.domain.dto.ResultPaginationDTO;
-import com.example.JobHunter.domain.dto.UserCreateDTO;
-import com.example.JobHunter.domain.dto.UserDTO;
-import com.example.JobHunter.domain.dto.UserLoginDTO;
-import com.example.JobHunter.domain.dto.UserUpdateDTO;
+import com.example.JobHunter.domain.dto.response.ResCreateUserDTO;
+import com.example.JobHunter.domain.dto.response.ResUpdateUserDTO;
+import com.example.JobHunter.domain.dto.response.ResUserDTO;
+import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.repository.UserRepository;
 
 import org.springframework.data.domain.Page;
@@ -53,7 +52,7 @@ public class UserService {
         meta.setPages(users.getTotalPages());
         meta.setTotal(users.getTotalElements());
 
-        List<UserDTO> userList = new ArrayList<UserDTO>();
+        List<ResUserDTO> userList = new ArrayList<ResUserDTO>();
 
         for (User user : users.getContent()) {
             userList.add(this.convertToUserDTO(user));
@@ -95,8 +94,8 @@ public class UserService {
         return this.userRepository.findByEmail(username);
     }
 
-    public UserCreateDTO convertToUserCreateDTO(User userOld) {
-        UserCreateDTO userDTO = new UserCreateDTO();
+    public ResCreateUserDTO convertToUserCreateDTO(User userOld) {
+        ResCreateUserDTO userDTO = new ResCreateUserDTO();
         userDTO.setId(userOld.getId());
         userDTO.setName(userOld.getName());
         userDTO.setEmail(userOld.getEmail());
@@ -116,8 +115,8 @@ public class UserService {
         return null;
     }
 
-    public UserUpdateDTO convertToUserUpdateDTO(User userOld) {
-        UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
+    public ResUpdateUserDTO convertToUserUpdateDTO(User userOld) {
+        ResUpdateUserDTO userUpdateDTO = new ResUpdateUserDTO();
         userUpdateDTO.setId(userOld.getId());
         userUpdateDTO.setName(userOld.getName());
         userUpdateDTO.setEmail(userOld.getEmail());
@@ -128,8 +127,8 @@ public class UserService {
         return userUpdateDTO;
     }
 
-    public UserDTO convertToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO();
+    public ResUserDTO convertToUserDTO(User user) {
+        ResUserDTO userDTO = new ResUserDTO();
 
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
@@ -147,14 +146,6 @@ public class UserService {
     public User fetchUserByEmail(String username) {
 
         return this.userRepository.findByEmail(username);
-    }
-
-    public UserLoginDTO convertToUserLoginDTO(User user) {
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
-        userLoginDTO.setId(user.getId());
-        userLoginDTO.setName(user.getName());
-        userLoginDTO.setEmail(user.getEmail());
-        return userLoginDTO;
     }
 
     public void updateRefreshToken(String refresh_Token, String email) {

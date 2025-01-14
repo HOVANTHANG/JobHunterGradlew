@@ -3,9 +3,8 @@ package com.example.JobHunter.controller.admin;
 import com.example.JobHunter.Util.SecurityUtil;
 import com.example.JobHunter.Util.annotation.ApiMessage;
 import com.example.JobHunter.domain.User;
-import com.example.JobHunter.domain.dto.ReqLoginDTO;
-import com.example.JobHunter.domain.dto.ResLoginDTO;
-import com.example.JobHunter.domain.dto.UserLoginDTO;
+import com.example.JobHunter.domain.dto.request.ReqLoginDTO;
+import com.example.JobHunter.domain.dto.response.ResLoginDTO;
 import com.example.JobHunter.service.UserService;
 
 import jakarta.validation.Valid;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -57,20 +55,23 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         ResLoginDTO res = new ResLoginDTO();
-
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
-        User user = this.userService.fetchUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResLoginDTO.UserLoginDTO userLoginDTO = new ResLoginDTO.UserLoginDTO();
+        User user = this.userService.fetchUserByEmail(loginDTO.getUsername());
         if (user != null) {
-            userLoginDTO = this.userService.convertToUserLoginDTO(user);
+            userLoginDTO = new ResLoginDTO.UserLoginDTO(
+                    user.getId(),
+                    user.getEmail(),
+                    user.getName());
             res.setUser(userLoginDTO);
         }
+
         // create a Token
         String access_Token = this.securityUtil.CreateAccessToken(authentication.getName(), userLoginDTO);
         res.setAccess_token(access_Token);
         // Create refresh token
         String refresh_Token = this.securityUtil.CreateRefreshToken(loginDTO.getUsername(), userLoginDTO);
         // Update refresh token
-        this.userService.updateRefreshToken(refresh_Token, userLoginDTO.getEmail());
+        this.userService.updateRefreshToken(refresh_Token, loginDTO.getUsername());
 
         // Set cookie
         ResponseCookie responseCookie = ResponseCookie
@@ -96,7 +97,7 @@ public class AuthController {
                 : "";
         User user = this.userService.fetchUserByEmail(email);
 
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        ResLoginDTO.UserLoginDTO userLoginDTO = new ResLoginDTO.UserLoginDTO();
         ResLoginDTO.UserGetAccountDTO userGetAccountDTO = new ResLoginDTO.UserGetAccountDTO();
         if (user != null) {
             userLoginDTO.setId(user.getId());
@@ -123,10 +124,13 @@ public class AuthController {
 
         ResLoginDTO res = new ResLoginDTO();
 
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        ResLoginDTO.UserLoginDTO userLoginDTO = new ResLoginDTO.UserLoginDTO();
         User currentUser = this.userService.fetchUserByEmail(email);
         if (currentUser != null) {
-            userLoginDTO = this.userService.convertToUserLoginDTO(currentUser);
+            userLoginDTO = new ResLoginDTO.UserLoginDTO(
+                    currentUser.getId(),
+                    currentUser.getEmail(),
+                    currentUser.getName());
             res.setUser(userLoginDTO);
         }
         // create a Token

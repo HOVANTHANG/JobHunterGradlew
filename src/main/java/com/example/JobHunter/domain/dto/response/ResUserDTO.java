@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain.dto;
+package com.example.JobHunter.domain.dto.response;
 
 import java.time.Instant;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserUpdateDTO {
+public class ResUserDTO {
     private long id;
 
     private String name;
@@ -21,6 +21,8 @@ public class UserUpdateDTO {
 
     private String address;
 
-    private Instant updateAt;
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }
