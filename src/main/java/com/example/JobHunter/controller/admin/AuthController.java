@@ -3,7 +3,7 @@ package com.example.JobHunter.controller.admin;
 import com.example.JobHunter.Util.SecurityUtil;
 import com.example.JobHunter.Util.annotation.ApiMessage;
 import com.example.JobHunter.domain.User;
-import com.example.JobHunter.domain.dto.LoginDTO;
+import com.example.JobHunter.domain.dto.ReqLoginDTO;
 import com.example.JobHunter.domain.dto.ResLoginDTO;
 import com.example.JobHunter.domain.dto.UserLoginDTO;
 import com.example.JobHunter.service.UserService;
@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO loginDTO) {
         // put input include username/password into Security
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
                 loginDTO.getPassword());

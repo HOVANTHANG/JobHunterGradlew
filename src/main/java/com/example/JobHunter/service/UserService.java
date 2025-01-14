@@ -1,7 +1,6 @@
 package com.example.JobHunter.service;
 
 import com.example.JobHunter.domain.User;
-import com.example.JobHunter.domain.dto.Meta;
 import com.example.JobHunter.domain.dto.ResultPaginationDTO;
 import com.example.JobHunter.domain.dto.UserCreateDTO;
 import com.example.JobHunter.domain.dto.UserDTO;
@@ -46,7 +45,7 @@ public class UserService {
     public ResultPaginationDTO getallUser(Specification<User> spec, Pageable pageable) {
         Page<User> users = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
-        Meta meta = new Meta();
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta();
 
         meta.setPage(users.getNumber() + 1);
         meta.setPageSize(users.getSize());
