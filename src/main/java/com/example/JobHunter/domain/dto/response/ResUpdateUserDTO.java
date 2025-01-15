@@ -25,6 +25,8 @@ public class ResUpdateUserDTO {
 
     private Instant updateAt;
 
+    private ResCompanyDTO company;
+
     @Getter
     @Setter
     @NoArgsConstructor

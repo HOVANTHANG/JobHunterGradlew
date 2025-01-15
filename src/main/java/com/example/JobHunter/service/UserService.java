@@ -123,6 +123,10 @@ public class UserService {
 
     public ResUpdateUserDTO convertToUserUpdateDTO(User userOld) {
         ResUpdateUserDTO userUpdateDTO = new ResUpdateUserDTO();
+        ResUpdateUserDTO.ResCompanyDTO companyDTO = new ResUpdateUserDTO.ResCompanyDTO();
+        companyDTO.setId(userOld.getCompany().getId());
+        companyDTO.setName(userOld.getCompany().getName());
+
         userUpdateDTO.setId(userOld.getId());
         userUpdateDTO.setName(userOld.getName());
         userUpdateDTO.setEmail(userOld.getEmail());
@@ -130,6 +134,7 @@ public class UserService {
         userUpdateDTO.setUpdateAt(userOld.getUpdatedAt());
         userUpdateDTO.setAddress(userOld.getAddress());
         userUpdateDTO.setAge(userOld.getAge());
+        userUpdateDTO.setCompany(companyDTO);
         return userUpdateDTO;
     }
 

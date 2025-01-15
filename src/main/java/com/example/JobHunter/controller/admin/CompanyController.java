@@ -75,9 +75,10 @@ public class CompanyController {
     }
 
     @DeleteMapping("/delete_company/{id}")
-    public ResponseEntity<String> deleteCompany(@PathVariable("id") long id) {
+    @ApiMessage("Delete company successful")
+    public ResponseEntity<Void> deleteCompany(@PathVariable("id") long id) {
         this.companyService.deleteCompany(id);
-        return ResponseEntity.ok("Delete company success");
+        return ResponseEntity.ok().body(null);
     }
 
 }
