@@ -4,7 +4,9 @@ import java.time.Instant;
 
 import com.example.JobHunter.Util.constant.GenderEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -22,5 +24,14 @@ public class ResUpdateUserDTO {
     private String address;
 
     private Instant updateAt;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResCompanyDTO {
+        private long id;
+        private String name;
+    }
 
 }

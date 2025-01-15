@@ -1,5 +1,6 @@
 package com.example.JobHunter.service;
 
+import com.example.JobHunter.domain.Company;
 import com.example.JobHunter.domain.User;
 import com.example.JobHunter.domain.dto.response.ResCreateUserDTO;
 import com.example.JobHunter.domain.dto.response.ResUpdateUserDTO;
@@ -22,19 +23,20 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
+    private CompanyService companyService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CompanyService companyService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.companyService = companyService;
     }
 
     public User createUser(User user) {
-
-        if (user != null) {
-            return this.userRepository.save(user);
-        } else {
-            return null;
+        if (user.getCompany() != null) {
+            Optional<Company> company = this.companyService.fetchCompanyByID(user.getCompany().getId());
+            user.setCompany(company.isPresent() ? company.get() : null);
         }
+        return this.userRepository.save(user);
     }
 
     public boolean existsByEmail(String email) {
@@ -103,6 +105,10 @@ public class UserService {
         userDTO.setCreatedAt(userOld.getCreatedAt());
         userDTO.setAddress(userOld.getAddress());
         userDTO.setAge(userOld.getAge());
+        ResCreateUserDTO.ResCompanyDTO company = new ResCreateUserDTO.ResCompanyDTO();
+        company.setId(userOld.getCompany().getId());
+        company.setName(userOld.getCompany().getName());
+        userDTO.setCompany(company);
 
         return userDTO;
     }
@@ -128,7 +134,11 @@ public class UserService {
     }
 
     public ResUserDTO convertToUserDTO(User user) {
+
         ResUserDTO userDTO = new ResUserDTO();
+        ResUserDTO.ResCompanyDTO companyDTO = new ResUserDTO.ResCompanyDTO();
+        companyDTO.setId(user.getCompany().getId());
+        companyDTO.setName(user.getCompany().getName());
 
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
@@ -138,6 +148,7 @@ public class UserService {
         userDTO.setUpdatedAt(user.getUpdatedAt());
         userDTO.setAddress(user.getAddress());
         userDTO.setAge(user.getAge());
+        userDTO.setCompany(companyDTO);
 
         return userDTO;
 

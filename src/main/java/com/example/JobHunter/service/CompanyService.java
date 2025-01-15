@@ -1,6 +1,5 @@
 package com.example.JobHunter.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 import com.example.JobHunter.domain.Company;
 import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.repository.CompanyRepository;
-
-import jakarta.validation.Valid;
 
 @Service
 public class CompanyService {
@@ -73,6 +70,10 @@ public class CompanyService {
             return;
         }
 
+    }
+
+    public Optional<Company> fetchCompanyByID(Long id) {
+        return companyRepository.findById(id);
     }
 
 }

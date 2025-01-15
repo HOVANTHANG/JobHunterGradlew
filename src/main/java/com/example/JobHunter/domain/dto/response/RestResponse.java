@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain;
+package com.example.JobHunter.domain.dto.response;
 
 public class RestResponse<T> {
     private int statusCode;

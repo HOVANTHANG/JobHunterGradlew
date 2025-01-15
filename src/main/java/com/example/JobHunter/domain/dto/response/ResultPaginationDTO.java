@@ -23,4 +23,5 @@ public class ResultPaginationDTO {
         private long total;
 
     }
+
 }

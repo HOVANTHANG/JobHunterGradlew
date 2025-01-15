@@ -1,11 +1,11 @@
 package com.example.JobHunter.controller.admin;
 
 import com.example.JobHunter.Util.annotation.ApiMessage;
-import com.example.JobHunter.domain.RestResponse;
 import com.example.JobHunter.domain.User;
 import com.example.JobHunter.domain.dto.response.ResCreateUserDTO;
 import com.example.JobHunter.domain.dto.response.ResUpdateUserDTO;
 import com.example.JobHunter.domain.dto.response.ResUserDTO;
+import com.example.JobHunter.domain.dto.response.RestResponse;
 import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
 import com.example.JobHunter.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
