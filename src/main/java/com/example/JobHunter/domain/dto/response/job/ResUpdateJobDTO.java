@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain.dto.response;
+package com.example.JobHunter.domain.dto.response.job;
 
 import java.time.Instant;
 import java.util.List;

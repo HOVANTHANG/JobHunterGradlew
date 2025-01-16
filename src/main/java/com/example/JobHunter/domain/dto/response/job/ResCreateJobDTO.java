@@ -1,4 +1,4 @@
-package com.example.JobHunter.domain.dto.response;
+package com.example.JobHunter.domain.dto.response.job;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResJobDTO {
+public class ResCreateJobDTO {
     private long id;
 
     private String name;
@@ -25,28 +25,20 @@ public class ResJobDTO {
 
     private LevelEnum level;
 
-    private String description;
-
     private Instant startDate;
     private Instant endDate;
     private boolean Active;
     private Instant createdAt;
 
-    private Instant updatedAt;
-
     private String createdBy;
 
-    private String updatedBy;
+    private List<String> skills;
 
-    private List<SkillDTO> skills;
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class SkillDTO {
-        private long id;
-        private String name;
-    }
-
+    // @Getter
+    // @Setter
+    // @NoArgsConstructor
+    // @AllArgsConstructor
+    // public static class GetSkill {
+    // private List<String> skills;
+    // }
 }

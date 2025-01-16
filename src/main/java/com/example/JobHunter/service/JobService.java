@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.JobHunter.domain.Job;
 import com.example.JobHunter.domain.Skill;
-import com.example.JobHunter.domain.dto.response.ResCreateJobDTO;
-import com.example.JobHunter.domain.dto.response.ResJobDTO;
-import com.example.JobHunter.domain.dto.response.ResUpdateJobDTO;
 import com.example.JobHunter.domain.dto.response.ResultPaginationDTO;
+import com.example.JobHunter.domain.dto.response.job.ResCreateJobDTO;
+import com.example.JobHunter.domain.dto.response.job.ResJobDTO;
+import com.example.JobHunter.domain.dto.response.job.ResUpdateJobDTO;
 import com.example.JobHunter.repository.JobRepository;
 import com.example.JobHunter.repository.SkillRepository;
 
