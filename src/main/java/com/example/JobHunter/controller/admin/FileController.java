@@ -1,13 +1,20 @@
 package com.example.JobHunter.controller.admin;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +36,29 @@ public class FileController {
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
+    }
+
+    @GetMapping("/files")
+    @ApiMessage("Download a file")
+    public ResponseEntity<Resource> downLoadFile(
+            @RequestParam(name = "fileName", required = false) String filename,
+            @RequestParam(name = "folder", required = false) String folder)
+            throws StorageException, URISyntaxException, FileNotFoundException {
+        if (filename == null || folder == null) {
+            throw new StorageException("Missing required params :(filename or folder)");
+        }
+        long fileLength = this.fileService.getFileLength(filename, folder);
+        if (fileLength == 0) {
+            throw new StorageException("File with name = " + filename + " not found.");
+        }
+
+        InputStreamResource resource = this.fileService.getResource(filename, folder);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .contentLength(fileLength)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
     @PostMapping("/files")
@@ -53,9 +83,9 @@ public class FileController {
         this.fileService.createFolder(baseURI + folder);
 
         // store the file
-        this.fileService.store(file, folder);
+        String currentFilename = this.fileService.store(file, folder);
 
-        ResUploadFile resUploadFile = new ResUploadFile(file.getOriginalFilename(), Instant.now());
+        ResUploadFile resUploadFile = new ResUploadFile(currentFilename, Instant.now());
 
         return ResponseEntity.ok().body(resUploadFile);
     }
